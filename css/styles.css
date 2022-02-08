@@ -61,13 +61,13 @@ input {
 }
 
 #output { 
-    width: auto;
+    width: 50%;
     margin-top: 10px;
     margin-bottom: 20px;
-    padding: 10px;
+    padding: 4px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     text-align: center;
-    padding-left: calc(25% - 10px);
-    padding-right: calc(25% - 10px);
     border-radius: 10px;
 }
 
@@ -85,7 +85,7 @@ input {
         font-size: 1rem;
     }
 
-    input {
+    input, #output {
         width: 75%;
     }
 }
