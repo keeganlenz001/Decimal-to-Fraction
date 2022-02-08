@@ -1,7 +1,7 @@
 const input = document.getElementById('input');
-
-input.addEventListener('input', handler);
-input.addEventListener('keyup', handler)
+var decimal = false;
+var open_paren = false;
+var close_paren = false;
 
 function output() {
   document.getElementById("output").style.marginBottom = "20px";
@@ -10,38 +10,125 @@ function output() {
   document.getElementById("output").style.paddingBottom = "10px";
 }
 
+function no_output() {
+  document.getElementById("output").style.marginBottom = "0px";
+  document.getElementById("output").style.padding = "0px";
+  document.getElementById("output").style.paddingTop = "0px";
+  document.getElementById("output").style.paddingBottom = "0px";
+}
+
+input.addEventListener('input', handler);
+input.addEventListener('keyup', handler)
+
 function handler(e) {
   input.textContent= e.target.value;
+  input_number = input.textContent;
 
-  num = Number(input.textContent);
+  for (i = 0; i < input_number.length; i++) {
+    if (input_number[i] == '.') {
+      decimal = true
+    }
 
+    if (input_number[i] == '(') {
+      open_paren = true
+    }
 
-  if (isNaN(num)) {
+    if (input_number[i] == ')') {
+      close_paren = true
+    }
+  }
+
+  if (input_number != '' && !Number(input_number) && (open_paren == false || close_paren == false)) {
+    console.log(input_number)
     output()
     document.getElementById("output").innerHTML = "Invalid Input!";
     document.getElementById("output").style.backgroundColor = "rgba(255, 0, 0, 0.25)";
+    return
   }else{
+    no_output()
     document.getElementById("output").innerHTML = "";
-    document.getElementById("output").style.backgroundColor = "rgba(255, 0, 0, 0)";
+    document.getElementById("output").style.backgroundColor = "rgba(0, 0, 0, 0)";
+  }
 
-    if (String(num).length > 17) {
-      output()
-      document.getElementById("output").innerHTML = "This number is too large!";
-      document.getElementById("output").style.backgroundColor = "rgba(255, 0, 0, 0.25)";
-    }
+  console.log(decimal)
+  if (input_number != '' && decimal == false) {
+    output();
+    document.getElementById("output").innerHTML = "This number cannot be futhur simplified";
+    document.getElementById("output").style.backgroundColor = "rgba(0, 0, 0, 0.25)";
+    return;
+  }
 
-    if (e.keyCode === 13) {
-      if (Number.isInteger(num)) {
-        output()
-        document.getElementById("output").innerHTML = "This number cannot be converted to a fraction";
-        document.getElementById("output").style.backgroundColor = "rgba(0,0,0, 0.10)";
-      }else{
-        newNum = Math.ceil((num * 9) * 10) * 0.1
-        output()
-        document.getElementById("output").innerHTML = String(num) + " to a fraction is: " + String(newNum) + '/9';
-        document.getElementById("output").style.backgroundColor = "rgba(0, 255, 0, 0.25)";
+  var parts = input_number.split('.');
+  if (open_paren == true && close_paren == true) { 
+    whole = parts[0]; //-- whole number 
+    //whole = parseInt(whole);
+    
+    behind_decimal = parts[1];
+
+
+    after_dot = behind_decimal.split('(');
+
+    convertable_num = after_dot[0]; //-- number before looping number 
+    power = convertable_num.split('');
+    x = power.length;
+
+    denominator_1 = Math.pow(10, x);
+    inside = after_dot[1];
+
+    var loop_num = inside.split(')')[0]; //-- loop number 
+    var size = loop_num.split('').length;
+
+    const first_fraction = {
+      numerator: convertable_num,
+      denominator: denominator_1,
+    };
+
+    y1 = Number(whole * first_fraction.denominator) + Number(first_fraction.numerator);
+
+    const first_sum_fraction = {
+      numerator: y1,
+      denominator: denominator_1,
+    };
+
+    z1 = Math.pow(10, size);
+    const denom_fraction = {
+      numerator: z1 - 1,
+      denominator: z1,
+    };
+
+    const numer_fraction = {
+      numerator: loop_num,
+      denominator: Math.pow(10, Number(x) + 1),
+    };
+
+    const last_fraction = {
+      numerator: numer_fraction.numerator * denom_fraction.denominator,
+      denominator: numer_fraction.denominator * denom_fraction.numerator,
+    };
+
+    const final_fraction = {
+      numerator: Number(first_sum_fraction.numerator * last_fraction.denominator) + Number(first_sum_fraction.denominator * last_fraction.numerator),
+      denominator: first_sum_fraction.denominator * last_fraction.denominator,
+    };
+
+    function gcd(a, b) {
+      if (a == 0) {
+          return b;
       }
+      return gcd(b % a, a);
+    };
+  
+    divider = gcd(Number(final_fraction.numerator), Number(final_fraction.denominator));
+    
+    const result = {
+      numerator: final_fraction.numerator / divider,
+      denominator: final_fraction.denominator / divider,
+    };
+  
+    if (e.keyCode === 13 || e.keyCode === 76) {
+      output()
+      document.getElementById("output").innerHTML = String(result.numerator) + "/" + String(result.denominator) ;
+      document.getElementById("output").style.backgroundColor = "rgba(0, 255, 0, 0.25)";
     }
   }
 }
-
