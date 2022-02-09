@@ -1,20 +1,18 @@
 const input = document.getElementById('input');
 var decimal = false;
+var invalid_decimal = false;
 var open_paren = false;
 var close_paren = false;
 
 function output() {
+  decimal = false;
+  invalid_decimal = false;
+  open_paren = false;
+  close_paren = false;
   document.getElementById("output").style.marginBottom = "20px";
   document.getElementById("output").style.padding = "4px";
   document.getElementById("output").style.paddingTop = "10px";
   document.getElementById("output").style.paddingBottom = "10px";
-}
-
-function no_output() {
-  document.getElementById("output").style.marginBottom = "0px";
-  document.getElementById("output").style.padding = "0px";
-  document.getElementById("output").style.paddingTop = "0px";
-  document.getElementById("output").style.paddingBottom = "0px";
 }
 
 input.addEventListener('input', handler);
@@ -26,7 +24,11 @@ function handler(e) {
 
   for (i = 0; i < input_number.length; i++) {
     if (input_number[i] == '.') {
-      decimal = true
+      if (i + 1 < input_number.length) {
+        decimal = true
+      }else {
+        invalid_decimal = true
+      }
     }
 
     if (input_number[i] == '(') {
@@ -39,23 +41,31 @@ function handler(e) {
   }
 
   if (input_number != '' && !Number(input_number) && (open_paren == false || close_paren == false)) {
-    console.log(input_number)
-    output()
+    output();
     document.getElementById("output").innerHTML = "Invalid Input!";
     document.getElementById("output").style.backgroundColor = "rgba(255, 0, 0, 0.25)";
-    return
-  }else{
-    no_output()
-    document.getElementById("output").innerHTML = "";
-    document.getElementById("output").style.backgroundColor = "rgba(0, 0, 0, 0)";
+    return;
   }
 
-  console.log(decimal)
-  if (input_number != '' && decimal == false) {
+  if (invalid_decimal == true) {
+    output();
+    document.getElementById("output").innerHTML = "Invalid Input!";
+    document.getElementById("output").style.backgroundColor = "rgba(255, 0, 0, 0.25)";
+    return;
+  }
+
+  if (input_number != '' && Number(input_number) && decimal == false && invalid_decimal == false) {
+    console.log('yoyo')
     output();
     document.getElementById("output").innerHTML = "This number cannot be futhur simplified";
     document.getElementById("output").style.backgroundColor = "rgba(0, 0, 0, 0.25)";
     return;
+  }else{
+    document.getElementById("output").innerHTML = "";
+    document.getElementById("output").style.marginBottom = "0px";
+    document.getElementById("output").style.padding = "0px";
+    document.getElementById("output").style.paddingTop = "0px";
+    document.getElementById("output").style.paddingBottom = "0px";
   }
 
   var parts = input_number.split('.');
@@ -125,10 +135,10 @@ function handler(e) {
       denominator: final_fraction.denominator / divider,
     };
   
-    if (e.keyCode === 13 || e.keyCode === 76) {
-      document.getElementById("output").innerHTML = "<p id='numerator'>" + String(result.numerator) + "</p>" + "<p id='denominator'>" + String(result.denominator) + "</p>";
-      document.getElementById("output").style.backgroundColor = "rgba(0, 255, 0, 0.25)";
-      output()
-    }
+    // if (e.keyCode === 13 || e.keyCode === 76) {
+    document.getElementById("output").innerHTML = "<p id='numerator'>" + String(result.numerator) + "</p>" + "<p id='denominator'>" + String(result.denominator) + "</p>";
+    document.getElementById("output").style.backgroundColor = "rgba(0, 255, 0, 0.25)";
+    output()
+    // }
   }
 }
