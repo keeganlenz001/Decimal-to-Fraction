@@ -93,10 +93,10 @@ footer {
     left: 5px;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
     .calculator {
-        width: 100%;
-        min-width: 100%;
+        width: 90%;
+        min-width: 90%;
     }
 
     h1 {
