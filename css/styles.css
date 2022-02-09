@@ -83,6 +83,16 @@ input {
     margin-top: 0;
 }
 
+footer {
+    color: rgb(0, 0, 0, 0.5);
+    font-size: 1em;
+    font-family: sans-serif;
+    text-align: block;
+    position: absolute;
+    bottom: 0;
+    left: 5px;
+}
+
 @media (max-width: 800px) {
     .calculator {
         width: 100%;
