@@ -1,12 +1,12 @@
 const input = document.getElementById('input');
-var isNum = false;
+var isNum = true;
 var decimal = false;
 var invalid_decimal = false;
 var open_paren = false;
 var close_paren = false;
 
 function output() {
-  isNum = false;
+  isNum = true;
   decimal = false;
   invalid_decimal = false;
   open_paren = false;
@@ -25,27 +25,32 @@ function handler(e) {
   input_number = input.textContent;
 
   for (i = 0; i < input_number.length; i++) {
-    if (input_number[i] == '0' || input_number[i] == '1' || input_number[i] == '2' || input_number[i] == '3' || input_number[i] == '4' || input_number[i] == '5' || input_number[i] == '6' || input_number[i] == '7' || input_number[i] == '8' || input_number[i] == '9') {
-      isNum = true;
+    if (input_number[i] != '0' && input_number[i] != '1' && input_number[i] != '2' && input_number[i] != '3' && input_number[i] != '4' && input_number[i] != '5' && input_number[i] != '6' && input_number[i] != '7' && input_number[i] != '8' && input_number[i] != '9' && input_number[i] != '.' && input_number[i] != '(' && input_number[i] != ')') {
+      isNum = false;
     }
 
     if (input_number[i] == '.') {
       if (i + 1 < input_number.length) {
-        decimal = true
-      }else {
-        invalid_decimal = true
+        if (!open_paren) {
+          decimal = true;
+        }else{
+          invalid_decimal = true;
+        }
+      }else{
+        invalid_decimal = true;
       }
     }
 
     if (input_number[i] == '(') {
-      open_paren = true
+      open_paren = true;
     }
 
     if (input_number[i] == ')') {
-      close_paren = true
+      close_paren = true;
     }
   }
 
+  
   if (input_number != '' && isNum == false) {
     output();
     document.getElementById("output").innerHTML = "Invalid Input!";
