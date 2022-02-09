@@ -4,6 +4,7 @@ var decimal = false;
 var invalid_decimal = false;
 var open_paren = false;
 var close_paren = false;
+var legal = true;
 
 function output() {
   isNum = true;
@@ -11,6 +12,7 @@ function output() {
   invalid_decimal = false;
   open_paren = false;
   close_paren = false;
+  legal = true;
   document.getElementById("output").style.marginBottom = "20px";
   document.getElementById("output").style.padding = "4px";
   document.getElementById("output").style.paddingTop = "10px";
@@ -42,11 +44,20 @@ function handler(e) {
     }
 
     if (input_number[i] == '(') {
+      if (input_number[i + 1] == ')') {
+        legal = false
+      }
       open_paren = true;
     }
 
     if (input_number[i] == ')') {
       close_paren = true;
+    }
+
+    if (open_paren == true) {
+      if (close_paren == false) {
+        legal = false
+      }
     }
   }
 
@@ -58,7 +69,7 @@ function handler(e) {
     return;
   }
 
-  if (invalid_decimal == true) {
+  if (legal == false || invalid_decimal == true) {
     output();
     document.getElementById("output").innerHTML = "Invalid Input!";
     document.getElementById("output").style.backgroundColor = "rgba(255, 0, 0, 0.25)";
