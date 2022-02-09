@@ -126,9 +126,9 @@ function handler(e) {
     };
   
     if (e.keyCode === 13 || e.keyCode === 76) {
-      output()
-      document.getElementById("output").innerHTML = String(result.numerator) + "/" + String(result.denominator) ;
+      document.getElementById("output").innerHTML = "<p id='numerator'>" + String(result.numerator) + "</p>" + "<p id='denominator'>" + String(result.denominator) + "</p>";
       document.getElementById("output").style.backgroundColor = "rgba(0, 255, 0, 0.25)";
+      output()
     }
   }
 }

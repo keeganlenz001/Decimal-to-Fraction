@@ -66,6 +66,21 @@ input {
     margin-top: 10px;
     text-align: center;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#numerator {
+    width: max-content;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+#denominator {
+    width: 100%;
+    margin-top: 0;
 }
 
 @media (max-width: 800px) {
